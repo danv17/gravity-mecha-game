@@ -9,17 +9,27 @@ public class CharacterController : MonoBehaviour
     private bool isJumping = false;
     private bool isGrounded = true;
     private bool isCeiling = false;
-    private bool facingRight = true;
+    public bool facingRight = true;
     public float speed;
     [Range(1, 50)]
     public float jumpForce;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
+    public Transform shotSpawn;
+    public GameObject shot;
 
-    void Awake()
+    void Start()
     {
         this.rb = this.GetComponent<Rigidbody2D>();
         this.anim = this.GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        if (Input.GetButton("Fire1"))
+        {
+            this.Shot();
+        }
     }
 
     void FixedUpdate()
@@ -51,7 +61,6 @@ public class CharacterController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && !this.isJumping)
         {
-            //this.rb.velocity = Vector2.up * jumpForce;
             this.Jump();
         }
 
@@ -103,6 +112,11 @@ public class CharacterController : MonoBehaviour
             Physics2D.gravity = new Vector3(0, gravity);
         }
         this.FlipVertical();
+    }
+
+    void Shot()
+    {
+        Instantiate(this.shot, this.shotSpawn.position, this.shotSpawn.localRotation);
     }
 
     void FlipHorizontal()
