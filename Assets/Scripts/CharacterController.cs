@@ -21,15 +21,10 @@ public class CharacterController : MonoBehaviour
         this.anim = this.GetComponent<Animator>();
     }
 
-    private void Update()
-    {
-        Debug.Log(this.rb.velocity.y);
-    }
-
     void FixedUpdate()
     {
         float h = Input.GetAxisRaw("Horizontal");
-        Vector3 movement = new Vector3(h, 0.0f, 0.0f);
+        Vector2 movement = new Vector2(h, 0.0f);
 
         movement = movement.normalized * this.speed * Time.deltaTime;
 
@@ -42,24 +37,42 @@ public class CharacterController : MonoBehaviour
             this.Flip();
         }
 
-        if(h != 0)
+        if (h != 0)
         {
             this.anim.SetBool("isWalking", true);
-        } else {
+        }
+        else
+        {
             this.anim.SetBool("isWalking", false);
         }
 
-        this.rb.MovePosition(transform.position + movement);
+        //this.rb.MovePosition(transform.position + movement);
+        this.rb.position += movement;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !this.isJumping && this.isGrounded)
+        if (Input.GetButtonDown("Jump") && !this.isJumping && this.isGrounded)
         {
+            //this.rb.velocity = Vector2.up * jumpForce;
             this.Jump();
         }
 
-        if(this.rb.velocity.y < 0)
+        this.SmoothJump();
+    }
+
+    void Jump()
+    {
+        this.isGrounded = false;
+        Debug.Log("Is jumping");
+        this.rb.velocity = Vector2.up * jumpForce;
+        this.isJumping = true;
+    }
+
+    void SmoothJump()
+    {
+        if (this.rb.velocity.y < 0)
         {
             this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.fallMultiplier - 1) * Time.deltaTime;
-        } else if (this.rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        }
+        else if (this.rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
             this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.lowJumpMultiplier - 1) * Time.deltaTime;
         }
@@ -71,15 +84,6 @@ public class CharacterController : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
-    }
-
-    void Jump()
-    {
-        this.isGrounded = false;
-        Debug.Log("Is jumping");
-        this.rb.AddForce(Vector2.up * this.jumpForce, ForceMode2D.Impulse);
-        //this.rb.velocity = new Vector2(0f, this.jumpForce * Time.deltaTime);
-        this.isJumping = true;
     }
 
     private void OnCollisionStay2D(Collision2D collision)
