@@ -8,6 +8,7 @@ public class CharacterController : MonoBehaviour
     private Animator anim;
     private bool isJumping = false;
     private bool isGrounded = true;
+    private bool isCeiling = false;
     private bool facingRight = true;
     public float speed;
     [Range(1, 50)]
@@ -46,35 +47,60 @@ public class CharacterController : MonoBehaviour
             this.anim.SetBool("isWalking", false);
         }
 
-        //this.rb.MovePosition(transform.position + movement);
         this.rb.position += movement;
 
-        if (Input.GetButtonDown("Jump") && !this.isJumping && this.isGrounded)
+        if (Input.GetButtonDown("Jump") && !this.isJumping)
         {
             //this.rb.velocity = Vector2.up * jumpForce;
             this.Jump();
         }
 
         this.SmoothJump();
+
+        if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            this.SwitchGravity();
+        }
     }
 
     void Jump()
     {
-        this.isGrounded = false;
-        Debug.Log("Is jumping");
-        this.rb.velocity = Vector2.up * jumpForce;
+        if (this.isCeiling) {
+            this.rb.velocity = Vector2.up * -jumpForce;
+        }
+        if (this.isGrounded)
+        {
+            this.rb.velocity = Vector2.up * jumpForce;
+        }
         this.isJumping = true;
+        Debug.Log("Is jumping");
     }
 
     void SmoothJump()
     {
+        if (this.isCeiling)
+        {
+            this.fallMultiplier *= -1;
+            this.lowJumpMultiplier *= -1;
+        }
         if (this.rb.velocity.y < 0)
         {
-            this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.fallMultiplier - 1) * Time.deltaTime;
+            this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.fallMultiplier) * Time.deltaTime;
         }
         else if (this.rb.velocity.y > 0 && !Input.GetButton("Jump"))
         {
-            this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.lowJumpMultiplier - 1) * Time.deltaTime;
+            this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.lowJumpMultiplier) * Time.deltaTime;
+        }
+    }
+
+    void SwitchGravity()
+    {
+        float gravity = -35.0f;
+        if (this.isGrounded) {
+            Physics2D.gravity = new Vector3(0, -gravity);
+        }
+        if (!this.isGrounded) {
+            Physics2D.gravity = new Vector3(0, gravity);
         }
     }
 
@@ -91,8 +117,17 @@ public class CharacterController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             this.isGrounded = true;
+            this.isCeiling = false;
             this.isJumping = false;
             Debug.Log("Is grounded");
+        }
+
+        if (collision.gameObject.CompareTag("Ceiling"))
+        {
+            this.isCeiling = true;
+            this.isGrounded = false;
+            this.isJumping = false;
+            Debug.Log("Is on the roof");
         }
     }
 }
