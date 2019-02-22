@@ -31,11 +31,11 @@ public class CharacterController : MonoBehaviour
 
         if (h > 0 && !this.facingRight)
         {
-            this.Flip();
+            this.FlipHorizontal();
         }
         else if (h < 0 && this.facingRight)
         {
-            this.Flip();
+            this.FlipHorizontal();
         }
 
         if (h != 0)
@@ -57,7 +57,7 @@ public class CharacterController : MonoBehaviour
 
         this.SmoothJump();
 
-        if (Input.GetKey(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             this.SwitchGravity();
         }
@@ -102,13 +102,21 @@ public class CharacterController : MonoBehaviour
         if (!this.isGrounded) {
             Physics2D.gravity = new Vector3(0, gravity);
         }
+        this.FlipVertical();
     }
 
-    void Flip()
+    void FlipHorizontal()
     {
         this.facingRight = !this.facingRight;
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
+    void FlipVertical()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.y *= -1;
         transform.localScale = theScale;
     }
 
