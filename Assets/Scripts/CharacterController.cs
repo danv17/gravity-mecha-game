@@ -9,7 +9,7 @@ public class CharacterController : MonoBehaviour
     private bool isJumping = false;
     private bool isGrounded = true;
     private bool isCeiling = false;
-    public bool facingRight = true;
+    //public bool facingRight = true;
     public float speed;
     [Range(1, 50)]
     public float jumpForce;
@@ -42,14 +42,14 @@ public class CharacterController : MonoBehaviour
 
         movement = movement.normalized * this.speed * Time.deltaTime;
 
-        if (h > 0 && !this.facingRight)
-        {
-            this.FlipHorizontal();
-        }
-        else if (h < 0 && this.facingRight)
-        {
-            this.FlipHorizontal();
-        }
+        //if (h > 0 && !this.facingRight)
+        //{
+        //    this.FlipHorizontal();
+        //}
+        //else if (h < 0 && this.facingRight)
+        //{
+        //    this.FlipHorizontal();
+        //}
 
         if (h != 0)
         {
@@ -122,20 +122,21 @@ public class CharacterController : MonoBehaviour
         Instantiate(this.shot, this.shotSpawn.transform.position, this.shotSpawn.transform.rotation);
     }
 
-    void FlipHorizontal()
-    {
-        this.facingRight = !this.facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
-    }
+    //void FlipHorizontal()
+    //{
+    //    this.facingRight = !this.facingRight;
+    //    Vector3 theScale = transform.localScale;
+    //    theScale.x *= -1;
+    //    transform.localScale = theScale;
+    //}
 
     void FlipVertical()
     {
-        Vector3 theScale = transform.localScale;
-        theScale.y *= -1;
-        transform.localScale = theScale;
-        this.shotSpawn.transform.rotation = Quaternion.Inverse(this.shotSpawn.transform.rotation);
+        //Vector3 theScale = transform.localScale;
+        //theScale.y *= -1;
+        //transform.localScale = theScale;
+        //this.shotSpawn.transform.rotation = Quaternion.Inverse(this.shotSpawn.transform.rotation);
+        this.transform.Rotate(180f, 0f, 0f);
     }
 
     private void OnCollisionStay2D(Collision2D collision)

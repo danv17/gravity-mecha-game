@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestrotByTime : MonoBehaviour
+public class DestroyByTime : MonoBehaviour
 {
     public float lifeTime;
     void Start()
