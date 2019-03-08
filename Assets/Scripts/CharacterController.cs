@@ -116,7 +116,7 @@ public class CharacterController : MonoBehaviour
 
     void Shot()
     {
-        Instantiate(this.shot, this.shotSpawn.position, this.shotSpawn.localRotation);
+        Instantiate(this.shot, this.shotSpawn.position, this.shotSpawn.rotation);
     }
 
     void FlipHorizontal()
