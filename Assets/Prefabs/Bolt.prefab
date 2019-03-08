@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 9216601704594127246}
   - component: {fileID: 3183966603021433918}
   - component: {fileID: 5618367281209866430}
+  - component: {fileID: 3517773352744438768}
   m_Layer: 0
   m_Name: Bolt
   m_TagString: Untagged
@@ -161,3 +162,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+--- !u!114 &3517773352744438768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014462286363002236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75bcc3f7fe1d8546b60201d9aed874d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 0.5
