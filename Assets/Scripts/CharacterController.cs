@@ -15,7 +15,9 @@ public class CharacterController : MonoBehaviour
     public float jumpForce;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
-    public Transform shotSpawn;
+    public float shotRate;
+    private float nextShot;
+    public GameObject shotSpawn;
     public GameObject shot;
 
     void Start()
@@ -26,8 +28,9 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && Time.time > this.nextShot)
         {
+            this.nextShot = Time.time + this.shotRate;
             this.Shot();
         }
     }
@@ -116,7 +119,7 @@ public class CharacterController : MonoBehaviour
 
     void Shot()
     {
-        Instantiate(this.shot, this.shotSpawn.position, this.shotSpawn.rotation);
+        Instantiate(this.shot, this.shotSpawn.transform.position, this.shotSpawn.transform.rotation);
     }
 
     void FlipHorizontal()
@@ -132,6 +135,7 @@ public class CharacterController : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.y *= -1;
         transform.localScale = theScale;
+        this.shotSpawn.transform.rotation = Quaternion.Inverse(this.shotSpawn.transform.rotation);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
