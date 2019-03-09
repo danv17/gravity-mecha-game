@@ -11,6 +11,7 @@ public class CharacterController : MonoBehaviour
     private bool isCeiling = false;
     //public bool facingRight = true;
     public float speed;
+    public int lifePoints;
     [Range(1, 50)]
     public float jumpForce;
     public float fallMultiplier = 2.5f;
@@ -156,5 +157,20 @@ public class CharacterController : MonoBehaviour
             this.isJumping = false;
             Debug.Log("Is on the roof");
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        this.lifePoints -= damage;
+
+        if (this.lifePoints <= 0)
+        {
+            this.Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
