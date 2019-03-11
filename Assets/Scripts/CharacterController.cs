@@ -11,12 +11,12 @@ public class CharacterController : MonoBehaviour
     private bool isCeiling = false;
     //public bool facingRight = true;
     public float speed;
-    public int lifePoints;
     [Range(1, 50)]
     public float jumpForce;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public float shotRate;
+    public HealthController healthController;
     private float nextShot;
     public GameObject shotSpawn;
     public GameObject shot;
@@ -25,6 +25,7 @@ public class CharacterController : MonoBehaviour
     {
         this.rb = this.GetComponent<Rigidbody2D>();
         this.anim = this.GetComponent<Animator>();
+        this.healthController = this.GetComponent<HealthController>();
     }
 
     void Update()
@@ -157,20 +158,5 @@ public class CharacterController : MonoBehaviour
             this.isJumping = false;
             Debug.Log("Is on the roof");
         }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        this.lifePoints -= damage;
-
-        if (this.lifePoints <= 0)
-        {
-            this.Die();
-        }
-    }
-
-    void Die()
-    {
-        Destroy(gameObject);
     }
 }

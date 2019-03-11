@@ -9,8 +9,9 @@ public class Shot : MonoBehaviour
     {
         if(collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyController>().TakeDamage(damage);
+            collision.GetComponent<EnemyController>().healthController.TakeDamage(damage);
             Destroy(gameObject);
         }
+
     }
 }
