@@ -352,13 +352,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85431c2bf2847f04c8707a61811d9095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
   damage: 10
   horizontalOffset: 2
-  radius: 2
+  rayToPlayerDetection: 1
+  rayToAtkPlayer: 0.5
   attackRadius: 3
-  offset: 0.25
-  moveSpeedAtk: 2
+  offsetToRaycast: 0.5
+  moveSpeedAtk: 2.25
   atkRate: 1
   nextAtk: 0
   healthController: {fileID: 0}
@@ -396,11 +396,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513f8cc62a69c2a448c617fac60712d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
-  offSet: 2
+  speed: 2
+  offsetMovement: 1
+  offsetAttack: 2
+  rightMovementLimit: 0
+  leftMovementLimit: 0
+  rightAtkLimit: 0
+  leftAtkLimit: 0
   jumpForce: 6
   jumpRate: 2
   nextJump: 0
+  canDetectPlayer: 1
+  isFacingRight: 1
   origin: {fileID: 1411061184}
 --- !u!1 &736173501
 GameObject:

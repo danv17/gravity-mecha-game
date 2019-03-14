@@ -5,10 +5,14 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     public float speed;
-    public float offSet;
+    public float offsetMovement;
+    public float offsetAttack;
 
-    public float rightLimit;
-    public float leftLimit;
+    public float rightMovementLimit;
+    public float leftMovementLimit;
+
+    public float rightAtkLimit;
+    public float leftAtkLimit;
 
     public float jumpForce;
     public float jumpRate;
@@ -22,8 +26,10 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Awake()
     {
-        this.rightLimit = this.origin.position.x + this.offSet;
-        this.leftLimit = this.origin.position.x - this.offSet;
+        this.rightMovementLimit = this.origin.position.x + this.offsetMovement;
+        this.leftMovementLimit = this.origin.position.x - this.offsetMovement;
+        this.rightAtkLimit = this.origin.position.x + this.offsetAttack;
+        this.leftAtkLimit = this.origin.position.x - this.offsetAttack;
     }
     void Start()
     {
@@ -32,14 +38,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     float IsMovingRight()
     {
-        //float rightLimit = this.origin.position.x + this.offSet;
-        //float leftLimit = this.origin.position.x - this.offSet;
-        if (this.transform.position.x > rightLimit && this.isFacingRight)
+        if (this.transform.position.x > rightMovementLimit && this.isFacingRight)
         {
             this.speed *= -1;
             this.isFacingRight = false;
         }
-        else if (this.transform.position.x < leftLimit && !this.isFacingRight)
+        else if (this.transform.position.x < leftMovementLimit && !this.isFacingRight)
         {
             this.speed *= -1;
             this.isFacingRight = true;
@@ -69,9 +73,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void ResetPosition()
     {
-        //float rightLimit = this.origin.position.x + this.offSet;
-        //float leftLimit = this.origin.position.x - this.offSet;
-        if(this.transform.position.x > rightLimit || this.transform.position.x < leftLimit)
+        if(this.transform.position.x > rightMovementLimit || this.transform.position.x < leftMovementLimit)
         {
             Vector3.MoveTowards(this.transform.position, this.origin.position, this.speed);
         }
@@ -79,12 +81,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public bool CanDetectPlayer()
     {
-        //float rightLimit = this.origin.position.x + this.offSet;
-        //float leftLimit = this.origin.position.x - this.offSet;
-        if (this.transform.position.x == rightLimit || this.transform.position.x == leftLimit)
-        {
-            this.canDetectPlayer = false;
-        }
+        /* En caso de que exista una condición que impida detectar al jugador */
         return this.canDetectPlayer;
     }
 }
