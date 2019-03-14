@@ -84,6 +84,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(this.transform.position.x > rightMovementLimit || this.transform.position.x < leftMovementLimit)
         {
+            Debug.Log("Reset Position");
             Vector3.MoveTowards(this.transform.position, this.origin.position, this.speed);
         }
     }

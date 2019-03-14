@@ -5,10 +5,8 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public int damage;
-    public float horizontalOffset;
     public float rayToPlayerDetection;
     public float rayToAtkPlayer;
-    public float attackRadius;
     public float offsetToRaycast;
     public float moveSpeedAtk;
     public float atkRate;
@@ -46,52 +44,49 @@ public class EnemyController : MonoBehaviour
 
     void PlayerDetection()
     {
-        float limit = this.origin.position.x + this.attackRadius;
-
         float direction = this.behaviour.speed > 0 ? 1 : -1;
         startPoint = new Vector2(this.transform.position.x + (offsetToRaycast * direction), this.transform.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(startPoint, Vector2.right * direction, rayToPlayerDetection);
+        RaycastHit2D hitUpfront = Physics2D.Raycast(startPoint, Vector2.right * direction, rayToPlayerDetection);
+        RaycastHit2D hitDiagonalUp = Physics2D.Raycast(startPoint, new Vector2(direction, 1), rayToPlayerDetection);
+        RaycastHit2D hit;
 
-        if (hit)
+        if (hitUpfront || hitDiagonalUp)
         {
+            hit = hitUpfront ? hitUpfront : hitDiagonalUp;
             if (hit.transform.gameObject.CompareTag("Player")) {
-                this.player = hit.transform.gameObject;
-                Debug.Log(player.name);
+                this.player = hitUpfront.transform.gameObject;
+                Debug.Log("Enemy detected! ENGAGE");
                 this.MoveTowardsPlayer();
+                RaycastHit2D hitToAtk = Physics2D.Raycast(startPoint, Vector2.right * direction, rayToAtkPlayer);
+                if (hitToAtk && Time.time > this.nextAtk)
+                {
+                    this.nextAtk = Time.time + this.atkRate;
+                    this.Smash();
+                }
             }
-            Debug.DrawRay(startPoint, Vector3.right * direction, Color.yellow);
+            Debug.DrawRay(startPoint, Vector2.right * direction, Color.cyan);
+            Debug.DrawRay(startPoint, new Vector2(direction, 1), Color.magenta);
         }
         else
         {
+            Debug.Log("There is no enemy nearby");
             this.player = null;
             this.behaviour.isAttacking = false;
         }
 
     }
 
-    void ResetPosition()
-    {
-        this.transform.position = Vector3.MoveTowards(this.transform.position, this.origin.position, 0.25f);
-    }
-
     void Smash()
     {
-        float direction = this.behaviour.speed > 0 ? 1 : -1;
-        startPoint = new Vector2(this.transform.position.x + (rayToAtkPlayer * direction), this.transform.position.y);
-        RaycastHit2D hit = Physics2D.Raycast(startPoint, Vector2.right * direction, rayToAtkPlayer);
-        if (hit && Time.time > this.nextAtk)
-        {
-            Debug.Log("Attack");
-            this.anim.SetTrigger("isAttacking");
-            Instantiate(this.smash, this.player.gameObject.transform.position, Quaternion.identity);
-        }
+        Debug.Log("Attack");
+        //this.anim.SetTrigger("isAttacking");
+        Instantiate(this.smash, this.player.gameObject.transform.position, Quaternion.identity);
     }
 
     void MoveTowardsPlayer()
     {
         Debug.Log("Moving towards the player");
         float direction = this.behaviour.speed > 0 ? 1 : -1;
-        Debug.Log(direction);
         this.behaviour.isAttacking = true;
         this.rb.velocity = this.transform.right * this.moveSpeedAtk * direction;
     }
