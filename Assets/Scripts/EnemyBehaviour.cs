@@ -20,6 +20,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public bool canDetectPlayer = true;
     public bool isFacingRight = true;
+    public bool isAttacking = false;
 
     public Transform origin;
     private Rigidbody2D rb2d;
@@ -38,12 +39,19 @@ public class EnemyBehaviour : MonoBehaviour
 
     float IsMovingRight()
     {
-        if (this.transform.position.x > rightMovementLimit && this.isFacingRight)
+        float rightLimit = this.rightMovementLimit;
+        float leftLimit = this.leftMovementLimit;
+        if (this.isAttacking)
+        {
+            rightLimit = this.rightAtkLimit;
+            leftLimit = this.leftAtkLimit;
+        }
+        if (this.transform.position.x > rightLimit && this.isFacingRight)
         {
             this.speed *= -1;
             this.isFacingRight = false;
         }
-        else if (this.transform.position.x < leftMovementLimit && !this.isFacingRight)
+        else if (this.transform.position.x < leftLimit && !this.isFacingRight)
         {
             this.speed *= -1;
             this.isFacingRight = true;
@@ -59,16 +67,17 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void JumpPatrol()
     {
-        this.Jump();
-    }
-
-    void Jump()
-    {
-        if(Time.time > this.nextJump)
+        if (Time.time > this.nextJump)
         {
             this.nextJump = Time.time + this.jumpRate;
             this.rb2d.AddForce(new Vector2(this.IsMovingRight(), this.jumpForce), ForceMode2D.Impulse);
         }
+        this.ResetPosition();
+    }
+
+    void MoveToAttack()
+    {
+
     }
 
     void ResetPosition()

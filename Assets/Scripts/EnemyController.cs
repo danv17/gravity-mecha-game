@@ -57,12 +57,14 @@ public class EnemyController : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Player")) {
                 this.player = hit.transform.gameObject;
                 Debug.Log(player.name);
+                this.MoveTowardsPlayer();
             }
             Debug.DrawRay(startPoint, Vector3.right * direction, Color.yellow);
         }
         else
         {
             this.player = null;
+            this.behaviour.isAttacking = false;
         }
 
     }
@@ -90,6 +92,7 @@ public class EnemyController : MonoBehaviour
         Debug.Log("Moving towards the player");
         float direction = this.behaviour.speed > 0 ? 1 : -1;
         Debug.Log(direction);
+        this.behaviour.isAttacking = true;
         this.rb.velocity = this.transform.right * this.moveSpeedAtk * direction;
     }
 }
