@@ -9,23 +9,24 @@ public class CharacterController : MonoBehaviour
     private bool isJumping = false;
     private bool isGrounded = true;
     private bool isCeiling = false;
-    //public bool facingRight = true;
     public float speed;
     [Range(1, 50)]
     public float jumpForce;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public float shotRate;
+    public int selectedWeapon;
     public HealthController healthController;
     private float nextShot;
     public GameObject shotSpawn;
-    public GameObject shot;
+    public GameObject[] shots;
 
     void Start()
     {
         this.rb = this.GetComponent<Rigidbody2D>();
         this.anim = this.GetComponent<Animator>();
         this.healthController = this.GetComponent<HealthController>();
+        this.selectedWeapon = 0;
     }
 
     void Update()
@@ -35,6 +36,10 @@ public class CharacterController : MonoBehaviour
             this.nextShot = Time.time + this.shotRate;
             this.Shot();
         }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            this.SwitchWeapon();
+        }
     }
 
     void FixedUpdate()
@@ -43,15 +48,6 @@ public class CharacterController : MonoBehaviour
         Vector2 movement = new Vector2(h, 0.0f);
 
         movement = movement.normalized * this.speed * Time.deltaTime;
-
-        //if (h > 0 && !this.facingRight)
-        //{
-        //    this.FlipHorizontal();
-        //}
-        //else if (h < 0 && this.facingRight)
-        //{
-        //    this.FlipHorizontal();
-        //}
 
         if (h != 0)
         {
@@ -119,25 +115,24 @@ public class CharacterController : MonoBehaviour
         this.FlipVertical();
     }
 
-    void Shot()
+    void SwitchWeapon()
     {
-        Instantiate(this.shot, this.shotSpawn.transform.position, this.shotSpawn.transform.rotation);
+        
+        this.selectedWeapon++;
+        if(this.selectedWeapon > this.shots.Length - 1)
+        {
+            this.selectedWeapon = 0;
+        }
     }
 
-    //void FlipHorizontal()
-    //{
-    //    this.facingRight = !this.facingRight;
-    //    Vector3 theScale = transform.localScale;
-    //    theScale.x *= -1;
-    //    transform.localScale = theScale;
-    //}
+    void Shot()
+    {
+        GameObject shot = this.shots[this.selectedWeapon];
+        Instantiate(shot, this.shotSpawn.transform.position, this.shotSpawn.transform.rotation);
+    }
 
     void FlipVertical()
     {
-        //Vector3 theScale = transform.localScale;
-        //theScale.y *= -1;
-        //transform.localScale = theScale;
-        //this.shotSpawn.transform.rotation = Quaternion.Inverse(this.shotSpawn.transform.rotation);
         this.transform.Rotate(180f, 0f, 0f);
     }
 
