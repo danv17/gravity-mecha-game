@@ -17,11 +17,10 @@ public class EnemyController : MonoBehaviour
     public EnemyBehaviour behaviour;
     public GameObject smash;
     public Transform origin;
-    private bool isAttacking;
     private Rigidbody2D rb;
     private Animator anim;
     private Vector2 startPoint;
-    private GameObject player;
+    private GameObject player = null;
 
     void Start()
     {
@@ -33,40 +32,44 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        this.EnemyPatrolling();
+        this.PlayerDetection();
+        if (!this.player)
+        {
+            this.EnemyPatrolling();
+        }
         //this.PlayerDetection();
     }
 
-    IEnumerator Move()
-    {
-        float rightLimit = this.origin.position.x + this.horizontalOffset;
-        float leftLimit = this.origin.position.x - this.horizontalOffset;
-        if (this.transform.position.x > rightLimit)
-        {
-            speed *= -1;
-        }
-        else if (this.transform.position.x < leftLimit)
-        {
-            speed *= -1;
-        }
-        this.rb.velocity = this.transform.right * speed;
-        yield return null;
-    }
+    //IEnumerator Move()
+    //{
+    //    float rightLimit = this.origin.position.x + this.horizontalOffset;
+    //    float leftLimit = this.origin.position.x - this.horizontalOffset;
+    //    if (this.transform.position.x > rightLimit)
+    //    {
+    //        speed *= -1;
+    //    }
+    //    else if (this.transform.position.x < leftLimit)
+    //    {
+    //        speed *= -1;
+    //    }
+    //    this.rb.velocity = this.transform.right * speed;
+    //    yield return null;
+    //}
 
-    IEnumerator Attack()
-    {
-        float rightAtkLimit = this.origin.position.x + this.attackRadius;
-        float leftAtkLimit = this.origin.position.x - this.attackRadius;
-        if (this.player)
-        {
-            if (Mathf.Abs(this.transform.position.x) - Mathf.Abs(this.player.gameObject.transform.position.x) < 0.5)
-            {
-                Debug.Log("Attack");
-                this.Smash();
-            }
-        }
-        yield return new WaitForSeconds(5);
-    }
+    //IEnumerator Attack()
+    //{
+    //    float rightAtkLimit = this.origin.position.x + this.attackRadius;
+    //    float leftAtkLimit = this.origin.position.x - this.attackRadius;
+    //    if (this.player)
+    //    {
+    //        if (Mathf.Abs(this.transform.position.x) - Mathf.Abs(this.player.gameObject.transform.position.x) < 0.5)
+    //        {
+    //            Debug.Log("Attack");
+    //            this.Smash();
+    //        }
+    //    }
+    //    yield return new WaitForSeconds(5);
+    //}
 
     void EnemyPatrolling()
     {
@@ -84,7 +87,7 @@ public class EnemyController : MonoBehaviour
         //{
         //    this.rb.velocity = this.transform.right * speed;
         //}
-        this.behaviour.JumpPatrol();
+        this.behaviour.WalkPatrol();
     }
 
     /*Si, mientras patrulla, detecta al jugador*/
@@ -92,7 +95,7 @@ public class EnemyController : MonoBehaviour
     {
         float limit = this.origin.position.x + this.attackRadius;
 
-        float direction = this.speed > 0 ? 1 : -1;
+        float direction = this.behaviour.speed > 0 ? 1 : -1;
         startPoint = new Vector2(this.transform.position.x + (offset * direction), this.transform.position.y);
         RaycastHit2D hit = Physics2D.Raycast(startPoint, Vector2.right * direction, radius);
 
@@ -100,11 +103,11 @@ public class EnemyController : MonoBehaviour
         {
             if (hit.transform.gameObject.CompareTag("Player")) {
                 this.player = hit.transform.gameObject;
-                if (Mathf.Abs(this.transform.position.x) <= limit && this.player)
-                {
-                    this.MoveTowardsPlayer();
-                    this.Smash();
-                }
+                //if (Mathf.Abs(this.transform.position.x) <= limit && this.player)
+                //{
+                //    this.MoveTowardsPlayer();
+                //    this.Smash();
+                //}
                 Debug.Log(player.name);
             }
             Debug.DrawRay(startPoint, Vector3.right * direction, Color.yellow);

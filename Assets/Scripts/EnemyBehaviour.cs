@@ -7,13 +7,24 @@ public class EnemyBehaviour : MonoBehaviour
     public float speed;
     public float offSet;
 
+    public float rightLimit;
+    public float leftLimit;
+
     public float jumpForce;
     public float jumpRate;
     public float nextJump;
 
+    public bool canDetectPlayer = true;
+    public bool isFacingRight = true;
+
     public Transform origin;
     private Rigidbody2D rb2d;
 
+    void Awake()
+    {
+        this.rightLimit = this.origin.position.x + this.offSet;
+        this.leftLimit = this.origin.position.x - this.offSet;
+    }
     void Start()
     {
         this.rb2d = this.GetComponent<Rigidbody2D>();
@@ -21,15 +32,17 @@ public class EnemyBehaviour : MonoBehaviour
 
     float IsMovingRight()
     {
-        float rightLimit = this.origin.position.x + this.offSet;
-        float leftLimit = this.origin.position.x - this.offSet;
-        if (this.transform.position.x > rightLimit)
+        //float rightLimit = this.origin.position.x + this.offSet;
+        //float leftLimit = this.origin.position.x - this.offSet;
+        if (this.transform.position.x > rightLimit && this.isFacingRight)
         {
             this.speed *= -1;
+            this.isFacingRight = false;
         }
-        else if (this.transform.position.x < leftLimit)
+        else if (this.transform.position.x < leftLimit && !this.isFacingRight)
         {
             this.speed *= -1;
+            this.isFacingRight = true;
         }
         return this.speed;
     }
@@ -56,11 +69,22 @@ public class EnemyBehaviour : MonoBehaviour
 
     void ResetPosition()
     {
-        float rightLimit = this.origin.position.x + this.offSet;
-        float leftLimit = this.origin.position.x - this.offSet;
+        //float rightLimit = this.origin.position.x + this.offSet;
+        //float leftLimit = this.origin.position.x - this.offSet;
         if(this.transform.position.x > rightLimit || this.transform.position.x < leftLimit)
         {
-            Vector3.MoveTowards(this.transform.position, this.origin.position, 1f);
+            Vector3.MoveTowards(this.transform.position, this.origin.position, this.speed);
         }
+    }
+
+    public bool CanDetectPlayer()
+    {
+        //float rightLimit = this.origin.position.x + this.offSet;
+        //float leftLimit = this.origin.position.x - this.offSet;
+        if (this.transform.position.x == rightLimit || this.transform.position.x == leftLimit)
+        {
+            this.canDetectPlayer = false;
+        }
+        return this.canDetectPlayer;
     }
 }
