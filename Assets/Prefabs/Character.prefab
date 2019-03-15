@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7410968520761292144}
   - component: {fileID: 7410968520761292145}
   - component: {fileID: 7410968520761292141}
-  - component: {fileID: 7410968520761292140}
   - component: {fileID: 1063310229}
+  - component: {fileID: 7410968520761292140}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -149,9 +149,24 @@ MonoBehaviour:
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   shotRate: 0.2
+  selectedWeapon: 0
+  canSwitchGravity: 0
   healthController: {fileID: 0}
   shotSpawn: {fileID: 7906952698873603416}
-  shot: {fileID: 7014462286363002236, guid: 77afba57ba9acbc4e8e9883631814aac, type: 3}
+  shots: []
+--- !u!114 &1063310229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410968520761292146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dff3b46eb4c1fb4587ccfc308db8e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  facingRight: 1
 --- !u!95 &7410968520761292140
 Animator:
   serializedVersion: 3
@@ -171,19 +186,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1063310229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7410968520761292146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dff3b46eb4c1fb4587ccfc308db8e9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facingRight: 1
 --- !u!1 &7906952698873603416
 GameObject:
   m_ObjectHideFlags: 0

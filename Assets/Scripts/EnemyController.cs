@@ -54,7 +54,7 @@ public class EnemyController : MonoBehaviour
         {
             hit = hitUpfront ? hitUpfront : hitDiagonalUp;
             if (hit.transform.gameObject.CompareTag("Player")) {
-                this.player = hitUpfront.transform.gameObject;
+                this.player = hit.transform.gameObject;
                 Debug.Log("Enemy detected! ENGAGE");
                 this.MoveTowardsPlayer();
                 RaycastHit2D hitToAtk = Physics2D.Raycast(startPoint, Vector2.right * direction, rayToAtkPlayer);
@@ -66,6 +66,12 @@ public class EnemyController : MonoBehaviour
             }
             Debug.DrawRay(startPoint, Vector2.right * direction, Color.cyan);
             Debug.DrawRay(startPoint, new Vector2(direction, 1), Color.magenta);
+            if (this.player.gameObject.transform.position.x > this.behaviour.rightAtkLimit || this.player.gameObject.transform.position.x < this.behaviour.leftAtkLimit)
+            {
+                Debug.Log("There is no enemy nearby");
+                this.player = null;
+                this.behaviour.isAttacking = false;
+            }
         }
         else
         {
@@ -73,7 +79,6 @@ public class EnemyController : MonoBehaviour
             this.player = null;
             this.behaviour.isAttacking = false;
         }
-
     }
 
     void Smash()
