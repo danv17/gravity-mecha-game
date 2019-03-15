@@ -14,14 +14,19 @@ public class EnemyBehaviour : MonoBehaviour
     public float rightAtkLimit;
     public float leftAtkLimit;
 
+    public float jumpHeight;
     public float jumpForce;
     public float jumpRate;
     public float nextJump;
+
+    public float magnitude;
+    public float frequency;
 
     public bool canDetectPlayer = true;
     public bool isFacingRight = true;
     public bool isAttacking = false;
 
+    public Vector3 position;
     public Transform origin;
     private Rigidbody2D rb2d;
 
@@ -35,9 +40,10 @@ public class EnemyBehaviour : MonoBehaviour
     void Start()
     {
         this.rb2d = this.GetComponent<Rigidbody2D>();
+        this.position = this.transform.position;
     }
 
-    float IsMovingRight()
+    float GetSpeed()
     {
         float rightLimit = this.rightMovementLimit;
         float leftLimit = this.leftMovementLimit;
@@ -59,9 +65,9 @@ public class EnemyBehaviour : MonoBehaviour
         return this.speed;
     }
 
-    public void WalkPatrol() 
+    public void WalkPatrol()
     {
-        this.rb2d.velocity = this.transform.right * this.IsMovingRight();
+        this.rb2d.velocity = this.transform.right * this.GetSpeed();
         this.ResetPosition();
     }
 
@@ -70,14 +76,34 @@ public class EnemyBehaviour : MonoBehaviour
         if (Time.time > this.nextJump)
         {
             this.nextJump = Time.time + this.jumpRate;
-            this.rb2d.AddForce(new Vector2(this.IsMovingRight(), this.jumpForce), ForceMode2D.Impulse);
+            this.rb2d.AddForce(new Vector2(this.GetSpeed(), this.jumpHeight), ForceMode2D.Impulse);
         }
         this.ResetPosition();
     }
 
-    void MoveToAttack()
+    public void SinusoidalMovement()
     {
+        /* RigidBody2D MUST be Kinematic */
+        this.position += this.transform.right * Time.deltaTime * this.GetSpeed();
+        this.transform.position = this.position + this.transform.up * Mathf.Sin(Time.time * this.frequency) * this.magnitude;
+    }
 
+    void MeleeAttack()
+    {
+        /* Do melee attack */
+        Debug.Log("Melee Attack");
+    }
+
+    public void JumpAttack()
+    {
+        /* Do jump attack */
+        Debug.Log("Jump Attack");
+    }
+
+    public void FlyingAttack()
+    {
+        /* Do flying attack */
+        Debug.Log("Flying Attack");
     }
 
     void ResetPosition()

@@ -320,7 +320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590748009}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: -0.92, z: 0}
+  m_LocalPosition: {x: -1.69, y: -0.9280001, z: 0}
   m_LocalScale: {x: 0.1, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -353,10 +353,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  horizontalOffset: 2
   rayToPlayerDetection: 1
   rayToAtkPlayer: 0.5
-  attackRadius: 3
   offsetToRaycast: 0.5
   moveSpeedAtk: 2.25
   atkRate: 1
@@ -397,17 +395,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  offsetMovement: 1
+  offsetMovement: 2
   offsetAttack: 2
   rightMovementLimit: 0
   leftMovementLimit: 0
   rightAtkLimit: 0
   leftAtkLimit: 0
-  jumpForce: 6
+  jumpHeight: 6
+  jumpForce: 2
   jumpRate: 2
   nextJump: 0
+  magnitude: 0.5
+  frequency: 20
   canDetectPlayer: 1
   isFacingRight: 1
+  isAttacking: 0
+  position: {x: 0, y: 0, z: 0}
   origin: {fileID: 1411061184}
 --- !u!1 &736173501
 GameObject:
@@ -548,6 +551,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character
+      objectReference: {fileID: 0}
+    - target: {fileID: 7410968520761292146, guid: 79207a9cf026951488d071a5f8c01c83,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7410968520761292142, guid: 79207a9cf026951488d071a5f8c01c83,
         type: 3}

@@ -16,6 +16,7 @@ public class CharacterController : MonoBehaviour
     public float lowJumpMultiplier = 2f;
     public float shotRate;
     public int selectedWeapon;
+    public bool canSwitchGravity;
     public HealthController healthController;
     private float nextShot;
     public GameObject shotSpawn;
@@ -23,6 +24,7 @@ public class CharacterController : MonoBehaviour
 
     void Start()
     {
+        this.canSwitchGravity = true;
         this.rb = this.GetComponent<Rigidbody2D>();
         this.anim = this.GetComponent<Animator>();
         this.healthController = this.GetComponent<HealthController>();
@@ -117,7 +119,6 @@ public class CharacterController : MonoBehaviour
 
     void SwitchWeapon()
     {
-        
         this.selectedWeapon++;
         if(this.selectedWeapon > this.shots.Length - 1)
         {
