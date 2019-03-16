@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8a21a906cc02c45977794844d566e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
   speed: 2
   offsetMovement: 2
   offsetAttack: 3
@@ -190,7 +191,6 @@ MonoBehaviour:
   rb2d: {fileID: 9056967437726515313}
   healthController: {fileID: 9056967437726515279}
   player: {fileID: 0}
-  damage: 10
 --- !u!114 &9056967437726515279
 MonoBehaviour:
   m_ObjectHideFlags: 0

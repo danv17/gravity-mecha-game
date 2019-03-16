@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    public int damage;
+
     public float speed;
     public float offsetMovement;
     public float offsetAttack;
@@ -23,8 +25,8 @@ public abstract class Enemy : MonoBehaviour
     protected float leftLimit;
 
     public bool isPatrolEnemy;
-    protected bool isFacingRight = true;
-    protected bool isAttacking = false;
+    public bool isFacingRight = true;
+    public bool isAttacking = false;
 
     public Transform origin;
     public Rigidbody2D rb2d;
@@ -108,4 +110,24 @@ public abstract class Enemy : MonoBehaviour
     }
 
     protected abstract void Movement();
+
+    private bool CanAttack()
+    {
+        if(Time.time > this.nextAtk)
+        {
+            this.nextAtk = Time.time + this.atkRate;
+        }
+        return Time.time + this.atkRate > this.nextAtk;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        bool canAttack = this.CanAttack();
+        if (collision.gameObject.CompareTag("Player") && canAttack)
+        {
+            collision.gameObject.GetComponent<HealthController>().TakeDamage(damage);
+            //collision.gameObject.GetComponent<CharacterController>().Recoil();
+            Debug.Log("Attack by ENTER in contact");
+        }
+    }
 }

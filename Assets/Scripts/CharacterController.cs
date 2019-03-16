@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Animator anim;
-    private bool isJumping = false;
-    private bool isGrounded = true;
-    private bool isCeiling = false;
+    public bool isJumping = false;
+    public bool isGrounded = true;
+    public bool isCeiling = false;
     public float speed;
     [Range(1, 50)]
     public float jumpForce;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public float shotRate;
+    public float nextShot;
     public int selectedWeapon;
     public bool canSwitchGravity;
     public HealthController healthController;
-    private float nextShot;
+    public Rigidbody2D rb2d;
+    public Animator anim;
     public GameObject shotSpawn;
     public GameObject[] shots;
 
     void Start()
     {
         this.canSwitchGravity = true;
-        this.rb = this.GetComponent<Rigidbody2D>();
+        this.rb2d = this.GetComponent<Rigidbody2D>();
         this.anim = this.GetComponent<Animator>();
         this.healthController = this.GetComponent<HealthController>();
         this.selectedWeapon = 0;
@@ -60,7 +60,7 @@ public class CharacterController : MonoBehaviour
             this.anim.SetBool("isWalking", false);
         }
 
-        this.rb.position += movement;
+        this.rb2d.position += movement;
 
         if (Input.GetButtonDown("Jump") && !this.isJumping)
         {
@@ -78,11 +78,11 @@ public class CharacterController : MonoBehaviour
     void Jump()
     {
         if (this.isCeiling) {
-            this.rb.velocity = Vector2.up * -jumpForce;
+            this.rb2d.velocity = Vector2.up * -jumpForce;
         }
         if (this.isGrounded)
         {
-            this.rb.velocity = Vector2.up * jumpForce;
+            this.rb2d.velocity = Vector2.up * jumpForce;
         }
         this.isJumping = true;
         Debug.Log("Is jumping");
@@ -95,13 +95,13 @@ public class CharacterController : MonoBehaviour
             this.fallMultiplier *= -1;
             this.lowJumpMultiplier *= -1;
         }
-        if (this.rb.velocity.y < 0)
+        if (this.rb2d.velocity.y < 0)
         {
-            this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.fallMultiplier) * Time.deltaTime;
+            this.rb2d.velocity += Vector2.up * Physics2D.gravity.y * (this.fallMultiplier) * Time.deltaTime;
         }
-        else if (this.rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        else if (this.rb2d.velocity.y > 0 && !Input.GetButton("Jump"))
         {
-            this.rb.velocity += Vector2.up * Physics2D.gravity.y * (this.lowJumpMultiplier) * Time.deltaTime;
+            this.rb2d.velocity += Vector2.up * Physics2D.gravity.y * (this.lowJumpMultiplier) * Time.deltaTime;
         }
     }
 
@@ -154,5 +154,13 @@ public class CharacterController : MonoBehaviour
             this.isJumping = false;
             Debug.Log("Is on the roof");
         }
+    }
+
+    /*TO DO*/
+    public void Recoil()
+    {
+        float recoil = 3f;
+        this.rb2d.AddForce(new Vector2(-this.speed * recoil, this.jumpForce), ForceMode2D.Impulse);
+        Debug.Log("Recoil");
     }
 }

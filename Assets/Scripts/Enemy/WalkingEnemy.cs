@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WalkingEnemy : Enemy
 {
-    public int damage;
-
     protected override void Start()
     {
         base.Start();
