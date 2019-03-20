@@ -65,9 +65,9 @@ public class CharacterController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !this.isJumping)
         {
             this.Jump();
+            this.SmoothJump();
         }
 
-        this.SmoothJump();
 
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
@@ -111,7 +111,7 @@ public class CharacterController : MonoBehaviour
         if (this.isGrounded) {
             Physics2D.gravity = new Vector3(0, -gravity);
         }
-        if (!this.isGrounded) {
+        if (this.isCeiling) {
             Physics2D.gravity = new Vector3(0, gravity);
         }
         this.FlipVertical();
