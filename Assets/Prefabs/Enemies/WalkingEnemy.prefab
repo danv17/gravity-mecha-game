@@ -98,7 +98,7 @@ GameObject:
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9056967437726515312
 Transform:
   m_ObjectHideFlags: 0
@@ -148,7 +148,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.00047118217, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -159,7 +159,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.35, y: 0.595}
+  m_Size: {x: 0.4, y: 0.595}
   m_EdgeRadius: 0
 --- !u!114 &9056967437726515278
 MonoBehaviour:
@@ -180,6 +180,7 @@ MonoBehaviour:
   rayToPlayerDetection: 1
   rayToAtkPlayer: 0.5
   offsetToRaycast: 0.12
+  time: 0
   atkRate: 1
   nextAtk: 0
   rightMovementLimit: 0
@@ -187,6 +188,8 @@ MonoBehaviour:
   rightAtkLimit: 0
   leftAtkLimit: 0
   isPatrolEnemy: 1
+  isFacingRight: 1
+  isPlayerDetected: 0
   origin: {fileID: 0}
   rb2d: {fileID: 9056967437726515313}
   healthController: {fileID: 9056967437726515279}

@@ -12,6 +12,7 @@ public class WalkingEnemy : Enemy
     private void FixedUpdate()
     {
         base.LineOfDetection();
+        base.CanAttack();
         this.Movement();
     }
 

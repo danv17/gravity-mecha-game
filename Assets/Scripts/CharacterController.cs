@@ -157,10 +157,10 @@ public class CharacterController : MonoBehaviour
     }
 
     /*TO DO*/
-    public void Recoil()
+    public void Recoil(float xDir)
     {
         float recoil = 3f;
-        this.rb2d.AddForce(new Vector2(-this.speed * recoil, this.jumpForce), ForceMode2D.Impulse);
+        this.rb2d.AddForce(new Vector2(xDir * recoil, this.jumpForce), ForceMode2D.Impulse);
         Debug.Log("Recoil");
     }
 }

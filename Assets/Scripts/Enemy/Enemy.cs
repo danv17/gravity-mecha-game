@@ -14,6 +14,7 @@ public abstract class Enemy : MonoBehaviour
     public float rayToAtkPlayer;
     public float offsetToRaycast;
 
+    public float time;
     public float atkRate;
     public float nextAtk;
 
@@ -26,7 +27,7 @@ public abstract class Enemy : MonoBehaviour
 
     public bool isPatrolEnemy;
     public bool isFacingRight = true;
-    public bool isAttacking = false;
+    public bool isPlayerDetected = false;
 
     public Transform origin;
     public Rigidbody2D rb2d;
@@ -56,7 +57,7 @@ public abstract class Enemy : MonoBehaviour
         {
             rightLimit = this.rightMovementLimit;
             leftLimit = this.leftMovementLimit;
-            if (this.isAttacking)
+            if (this.isPlayerDetected)
             {
                 rightLimit = this.rightAtkLimit;
                 leftLimit = this.leftAtkLimit;
@@ -99,34 +100,35 @@ public abstract class Enemy : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Player"))
             {
                 this.player = hit.transform.gameObject;
-                this.isAttacking = true;
+                this.isPlayerDetected = true;
             }
         }
         else
         {
             this.player = null;
-            this.isAttacking = false;
+            this.isPlayerDetected = false;
         }
     }
 
     protected abstract void Movement();
 
-    private bool CanAttack()
+    protected bool CanAttack()
     {
-        if(Time.time > this.nextAtk)
-        {
-            this.nextAtk = Time.time + this.atkRate;
-        }
-        return Time.time + this.atkRate > this.nextAtk;
+        return Time.time > this.nextAtk;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
+        if (!this.isPatrolEnemy)
+            return;
+
         bool canAttack = this.CanAttack();
         if (collision.gameObject.CompareTag("Player") && canAttack)
         {
+            float xDir = this.transform.position.x > collision.gameObject.transform.position.x ? -1 : 1;
             collision.gameObject.GetComponent<HealthController>().TakeDamage(damage);
-            //collision.gameObject.GetComponent<CharacterController>().Recoil();
+            collision.gameObject.GetComponent<CharacterController>().Recoil(xDir);
+            this.nextAtk = Time.time + this.atkRate;
             Debug.Log("Attack by ENTER in contact");
         }
     }

@@ -101,6 +101,7 @@ MonoBehaviour:
   rayToPlayerDetection: 0
   rayToAtkPlayer: 0
   offsetToRaycast: 0
+  time: 0
   atkRate: 0
   nextAtk: 0
   rightMovementLimit: 0
@@ -108,6 +109,8 @@ MonoBehaviour:
   rightAtkLimit: 0
   leftAtkLimit: 0
   isPatrolEnemy: 0
+  isFacingRight: 1
+  isPlayerDetected: 0
   origin: {fileID: 0}
   rb2d: {fileID: 2599132546158395691}
   healthController: {fileID: 2599132546158395669}
