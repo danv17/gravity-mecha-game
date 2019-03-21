@@ -117,19 +117,24 @@ public abstract class Enemy : MonoBehaviour
         return Time.time > this.nextAtk;
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (!this.isPatrolEnemy)
-            return;
+        //if (!this.isPatrolEnemy)
+        //    return;
 
         bool canAttack = this.CanAttack();
-        if (collision.gameObject.CompareTag("Player") && canAttack)
+        if (other.gameObject.CompareTag("Player") && canAttack)
         {
-            float xDir = this.transform.position.x > collision.gameObject.transform.position.x ? -1 : 1;
-            collision.gameObject.GetComponent<HealthController>().TakeDamage(damage);
-            collision.gameObject.GetComponent<CharacterController>().Recoil(xDir);
+            float xDir = this.transform.position.x > other.gameObject.transform.position.x ? -1 : 1;
+            other.gameObject.GetComponent<HealthController>().TakeDamage(damage);
+            other.gameObject.GetComponent<CharacterController>().Recoil(xDir);
             this.nextAtk = Time.time + this.atkRate;
             Debug.Log("Attack by ENTER in contact");
         }
+    }
+
+    public void SetOrigin(Transform origin)
+    {
+        this.origin = origin;
     }
 }

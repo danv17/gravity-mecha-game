@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthController : MonoBehaviour
 {
@@ -23,5 +24,7 @@ public class HealthController : MonoBehaviour
     public void Die()
     {
         Destroy(gameObject);
+        if (gameObject.CompareTag("Player"))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

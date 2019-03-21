@@ -5,15 +5,17 @@ using UnityEngine;
 public class Shot : MonoBehaviour
 {
     public int damage;
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Finish"))
             return;
 
-        if (collision.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyController>().healthController.TakeDamage(damage);
+            other.GetComponent<Enemy>().healthController.TakeDamage(damage);
+            Debug.Log(other.name + " had taken damage");
         }
+
         Destroy(gameObject);
     }
 }

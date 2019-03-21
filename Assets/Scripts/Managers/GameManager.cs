@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     private BoardManager boardScript;
+    //private BoardCreator boardScript;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         boardScript = GetComponent<BoardManager>();
+        //boardScript = GetComponent<BoardCreator>();
 
         InitGame();
     }

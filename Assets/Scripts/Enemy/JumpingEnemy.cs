@@ -10,7 +10,7 @@ public class JumpingEnemy : Enemy
     public float nextJump;
 
     //Test
-    public float maxJumpHeight = 1.5f;
+    public float maxJumpHeight = 0.75f;
     public float groundHeight;
     public Vector3 groundPos;
     public float fallSpeed = 12.0f;
@@ -38,40 +38,30 @@ public class JumpingEnemy : Enemy
     void CanJump()
     {
         this.canJump = Time.time >= this.nextJump;
-        //if (Time.time > this.nextJump)
-        //{
-        //    canJump = true;
-        //}
-        //else
-        //{
-        //    canJump = false;
-        //}
     }
 
     void IsGrounded()
     {
-        this.isGrounded = transform.position.y == groundPos.y;
-        //if (transform.position.y == groundPos.y)
-        //    isGrounded = true;
-        //else
-        //    isGrounded = false;
+        this.isGrounded = transform.position.y <= groundPos.y;
     }
 
     protected override void Movement()
     {
         //this.rb2d.AddForce(new Vector2(base.GetDirection(), this.jumpForce), ForceMode2D.Impulse);
         float xDir = base.GetDirection();
-        if (this.canJump && this.isGrounded)
+        Vector2 jump = Vector2.zero;
+        if (this.canJump && this.transform.position.y <= this.groundPos.y)
         {
             this.nextJump = Time.time + this.jumpRate;
-            base.rb2d.velocity = new Vector2(xDir * .25f, .5f);
+            jump = new Vector2(xDir * .0625f, .125f);
+            base.rb2d.velocity = jump.normalized;
             Debug.Log("Going up");
         }
         else if (transform.position.y > maxJumpHeight)
         {
-            base.rb2d.velocity = new Vector2(xDir * .25f, -.5f);
+            jump = new Vector2(xDir * .0625f, -.125f);
+            base.rb2d.velocity = jump.normalized;
             this.isGrounded = true;
-            //this.canJump = true;
             Debug.Log("Going down");
         }
         else if (this.isGrounded)
