@@ -119,15 +119,14 @@ public abstract class Enemy : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        //if (!this.isPatrolEnemy)
-        //    return;
-
         bool canAttack = this.CanAttack();
         if (other.gameObject.CompareTag("Player") && canAttack)
         {
             float xDir = this.transform.position.x > other.gameObject.transform.position.x ? -1 : 1;
-            other.gameObject.GetComponent<HealthController>().TakeDamage(damage);
-            other.gameObject.GetComponent<CharacterController>().Recoil(xDir);
+            bool canTakeDamage;
+            other.gameObject.GetComponent<HealthController>().TakeDamage(damage, out canTakeDamage);
+            if(canTakeDamage)
+                other.gameObject.GetComponent<CharacterController>().Recoil(xDir);
             this.nextAtk = Time.time + this.atkRate;
             Debug.Log("Attack by ENTER in contact");
         }

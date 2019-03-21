@@ -190,6 +190,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  damageTimer: 0
+  maxTimer: 1.5
 --- !u!95 &7410968520761292140
 Animator:
   serializedVersion: 3

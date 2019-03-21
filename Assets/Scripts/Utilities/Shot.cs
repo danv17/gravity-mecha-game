@@ -12,7 +12,8 @@ public class Shot : MonoBehaviour
 
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<Enemy>().healthController.TakeDamage(damage);
+            bool canTakeDamage;
+            other.GetComponent<Enemy>().healthController.TakeDamage(damage,out canTakeDamage);
             Debug.Log(other.name + " had taken damage");
         }
 

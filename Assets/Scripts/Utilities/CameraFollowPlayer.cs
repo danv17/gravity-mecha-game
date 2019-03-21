@@ -6,15 +6,17 @@ public class CameraFollowPlayer : MonoBehaviour
 {
     public GameObject player;
 
-    private Vector3 offset;
-
     private void Start()
     {
-        offset = transform.position - player.transform.position;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
+        if (player == null || player.Equals(null))
+            player = GameObject.FindGameObjectWithTag("Player");
+
+        //transform.position = new Vector3(player.transform.position.x, 2.5f, -10f);
+        transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, 5.6f, 17.4f), 2.5f, -10f);
     }
 }

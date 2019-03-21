@@ -159,8 +159,8 @@ public class CharacterController : MonoBehaviour
     /*TO DO*/
     public void Recoil(float xDir)
     {
-        float pushForce = 1.5f;
-        Vector2 force = new Vector2(xDir * pushForce, this.jumpForce);
+        float pushForce = 3f;
+        Vector2 force = new Vector2(xDir * pushForce, 6f);
         this.rb2d.AddForce(force, ForceMode2D.Impulse);
         Debug.Log("Recoil");
     }
